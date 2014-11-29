@@ -15,6 +15,7 @@ class MetalView : UIView {
 	var positionBuffer: MTLBuffer! = nil
 	var colorBuffer: MTLBuffer! = nil
 	var pipeline: MTLRenderPipelineState! = nil
+	var displayLink: CADisplayLink! = nil
 	
 	required init(coder aDecoder: NSCoder) {
 		
@@ -111,7 +112,23 @@ class MetalView : UIView {
 		commandBuffer.commit()
 	}
 	
+	func renderLoop() {
+		autoreleasepool {
+			self.redraw()
+		}
+	}
+	
 	// MARK: Lifetime methods
+	
+	override func didMoveToSuperview() {
+		if self.superview != nil {
+			displayLink = CADisplayLink(target: self, selector: Selector("renderLoop"))
+			displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+		} else {
+			displayLink.invalidate()
+			displayLink = nil
+		}
+	}
 	
 	override func didMoveToWindow() {
 		self.redraw()
