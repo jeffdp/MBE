@@ -15,6 +15,7 @@
 		1FF59D521A2A1595004A9B00 /* MBETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF59D511A2A1595004A9B00 /* MBETests.swift */; };
 		1FF59D5C1A2A271C004A9B00 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF59D5B1A2A271C004A9B00 /* MetalView.swift */; };
 		1FF59D5E1A2A2860004A9B00 /* MBEViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF59D5D1A2A2860004A9B00 /* MBEViewController.swift */; };
+		1FF59D601A2A55B9004A9B00 /* Little T-Rex_OBJ_obj.obj in Resources */ = {isa = PBXBuildFile; fileRef = 1FF59D5F1A2A55B9004A9B00 /* Little T-Rex_OBJ_obj.obj */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,7 @@
 		1FF59D511A2A1595004A9B00 /* MBETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBETests.swift; sourceTree = "<group>"; };
 		1FF59D5B1A2A271C004A9B00 /* MetalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 		1FF59D5D1A2A2860004A9B00 /* MBEViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBEViewController.swift; sourceTree = "<group>"; };
+		1FF59D5F1A2A55B9004A9B00 /* Little T-Rex_OBJ_obj.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Little T-Rex_OBJ_obj.obj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 		1FF59D361A2A1594004A9B00 /* MBE */ = {
 			isa = PBXGroup;
 			children = (
+				1FF59D5F1A2A55B9004A9B00 /* Little T-Rex_OBJ_obj.obj */,
 				1FF59D391A2A1594004A9B00 /* AppDelegate.swift */,
 				1FF59D3B1A2A1594004A9B00 /* GameViewController.swift */,
 				1FF59D5D1A2A2860004A9B00 /* MBEViewController.swift */,
@@ -203,6 +206,7 @@
 				1FF59D411A2A1594004A9B00 /* Main.storyboard in Resources */,
 				1FF59D461A2A1595004A9B00 /* LaunchScreen.xib in Resources */,
 				1FF59D431A2A1595004A9B00 /* Images.xcassets in Resources */,
+				1FF59D601A2A55B9004A9B00 /* Little T-Rex_OBJ_obj.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
