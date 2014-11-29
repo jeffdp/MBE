@@ -12,6 +12,9 @@ class MetalView : UIView {
 	
 	let device = MTLCreateSystemDefaultDevice()
 	var metalLayer: CAMetalLayer?
+	var positionBuffer: MTLBuffer! = nil
+	var colorBuffer: MTLBuffer! = nil
+	var pipeline: MTLRenderPipelineState! = nil
 	
 	required init(coder aDecoder: NSCoder) {
 		
@@ -20,8 +23,9 @@ class MetalView : UIView {
 		if let ml = self.layer as? CAMetalLayer {
 			self.metalLayer = ml
 			
-			metalLayer!.device = device
-			metalLayer!.pixelFormat = .BGRA8Unorm
+			buildDevice()
+			buildVertexBuffers()
+			buildPipeline()
 		} else {
 			assert(false, "layer is not CAMetalLayer")
 		}
@@ -32,6 +36,48 @@ class MetalView : UIView {
 	}
 	
 	// MARK: Graphics methods
+	
+	func buildDevice() {
+		metalLayer!.device = device
+		metalLayer!.pixelFormat = .BGRA8Unorm
+	}
+	
+	func buildVertexBuffers() {
+		let positions: [Float] = [
+			 0.0,  0.5, 0.0, 1.0,
+			-0.5, -0.5, 0.0, 1.0,
+			 0.5, -0.5, 0.0, 1.0
+		]
+		let positionLength = positions.count * sizeofValue(positions[0])
+		
+		let colors: [Float] = [
+			1, 0, 0, 1,
+			0, 1, 0, 1,
+			0, 0, 1, 1
+		]
+		let colorLength = colors.count * sizeofValue(colors[0])
+		
+		// options:MTLResourceOptionCPUCacheModeDefault ?
+		positionBuffer = device.newBufferWithBytes(positions, length: positionLength, options: nil)
+		
+		colorBuffer = device.newBufferWithBytes(colors, length: colorLength, options: nil)
+	}
+	
+	func buildPipeline() {
+		let library = device.newDefaultLibrary()
+		let vertexFunc = library?.newFunctionWithName("vertex_main")
+		let fragmentFunc = library?.newFunctionWithName("fragment_main")
+		
+		let pipelineDescriptor = MTLRenderPipelineDescriptor()
+		pipelineDescriptor.vertexFunction = vertexFunc;
+		pipelineDescriptor.fragmentFunction = fragmentFunc;
+		
+		// colorAttachment[0] is the framebuffer that will be rendered on screen
+		pipelineDescriptor.colorAttachments[0].pixelFormat = metalLayer!.pixelFormat
+		
+		var pipelineError: NSError?
+		pipeline = device.newRenderPipelineStateWithDescriptor(pipelineDescriptor, error: nil)
+	}
 	
 	func redraw() {
 		// Get the next displayable buffer (texture)
@@ -54,6 +100,10 @@ class MetalView : UIView {
 		
 		// Command encoder tells Metal what drawing we want to do
 		let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(passDescriptor)!
+		commandEncoder.setRenderPipelineState(pipeline)
+		commandEncoder.setVertexBuffer(positionBuffer, offset: 0, atIndex: 0)
+		commandEncoder.setVertexBuffer(colorBuffer, offset: 0, atIndex: 1)
+		commandEncoder.drawPrimitives(.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
 		commandEncoder.endEncoding()
 		
 		// Indicate that rendering is complete and drawable is ready to be executed on the GPU
