@@ -13,9 +13,11 @@ class MetalView : UIView {
 	let device = MTLCreateSystemDefaultDevice()
 	var metalLayer: CAMetalLayer?
 	var positionBuffer: MTLBuffer! = nil
-	var colorBuffer: MTLBuffer! = nil
+	var numberOfVertices = 0
 	var pipeline: MTLRenderPipelineState! = nil
 	var displayLink: CADisplayLink! = nil
+	
+	var model = CubeModel()
 	
 	required init(coder aDecoder: NSCoder) {
 		
@@ -44,24 +46,12 @@ class MetalView : UIView {
 	}
 	
 	func buildVertexBuffers() {
-		let positions: [Float] = [
-			 0.0,  0.5, 0.0, 1.0,
-			-0.5, -0.5, 0.0, 1.0,
-			 0.5, -0.5, 0.0, 1.0
-		]
+		let positions: [Float] = model.vertices
 		let positionLength = positions.count * sizeofValue(positions[0])
-		
-		let colors: [Float] = [
-			1, 0, 0, 1,
-			0, 1, 0, 1,
-			0, 0, 1, 1
-		]
-		let colorLength = colors.count * sizeofValue(colors[0])
+		numberOfVertices = positions.count
 		
 		// options:MTLResourceOptionCPUCacheModeDefault ?
 		positionBuffer = device.newBufferWithBytes(positions, length: positionLength, options: nil)
-		
-		colorBuffer = device.newBufferWithBytes(colors, length: colorLength, options: nil)
 	}
 	
 	func buildPipeline() {
@@ -103,8 +93,7 @@ class MetalView : UIView {
 		let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(passDescriptor)!
 		commandEncoder.setRenderPipelineState(pipeline)
 		commandEncoder.setVertexBuffer(positionBuffer, offset: 0, atIndex: 0)
-		commandEncoder.setVertexBuffer(colorBuffer, offset: 0, atIndex: 1)
-		commandEncoder.drawPrimitives(.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
+		commandEncoder.drawPrimitives(.Triangle, vertexStart: 0, vertexCount: numberOfVertices, instanceCount: 1)
 		commandEncoder.endEncoding()
 		
 		// Indicate that rendering is complete and drawable is ready to be executed on the GPU

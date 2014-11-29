@@ -16,6 +16,8 @@
 		1FF59D5C1A2A271C004A9B00 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF59D5B1A2A271C004A9B00 /* MetalView.swift */; };
 		1FF59D5E1A2A2860004A9B00 /* MBEViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF59D5D1A2A2860004A9B00 /* MBEViewController.swift */; };
 		1FF59D601A2A55B9004A9B00 /* Little T-Rex_OBJ_obj.obj in Resources */ = {isa = PBXBuildFile; fileRef = 1FF59D5F1A2A55B9004A9B00 /* Little T-Rex_OBJ_obj.obj */; };
+		1FF59D621A2A584E004A9B00 /* CubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF59D611A2A584E004A9B00 /* CubeModel.swift */; };
+		1FF59D641A2A5859004A9B00 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF59D631A2A5859004A9B00 /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,8 @@
 		1FF59D5B1A2A271C004A9B00 /* MetalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 		1FF59D5D1A2A2860004A9B00 /* MBEViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBEViewController.swift; sourceTree = "<group>"; };
 		1FF59D5F1A2A55B9004A9B00 /* Little T-Rex_OBJ_obj.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Little T-Rex_OBJ_obj.obj"; sourceTree = "<group>"; };
+		1FF59D611A2A584E004A9B00 /* CubeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubeModel.swift; sourceTree = "<group>"; };
+		1FF59D631A2A5859004A9B00 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +98,8 @@
 				1FF59D421A2A1595004A9B00 /* Images.xcassets */,
 				1FF59D441A2A1595004A9B00 /* LaunchScreen.xib */,
 				1FF59D371A2A1594004A9B00 /* Supporting Files */,
+				1FF59D611A2A584E004A9B00 /* CubeModel.swift */,
+				1FF59D631A2A5859004A9B00 /* Model.swift */,
 			);
 			path = MBE;
 			sourceTree = "<group>";
@@ -224,8 +230,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FF59D621A2A584E004A9B00 /* CubeModel.swift in Sources */,
 				1FF59D5C1A2A271C004A9B00 /* MetalView.swift in Sources */,
 				1FF59D5E1A2A2860004A9B00 /* MBEViewController.swift in Sources */,
+				1FF59D641A2A5859004A9B00 /* Model.swift in Sources */,
 				1FF59D3E1A2A1594004A9B00 /* Shaders.metal in Sources */,
 				1FF59D3A1A2A1594004A9B00 /* AppDelegate.swift in Sources */,
 			);
