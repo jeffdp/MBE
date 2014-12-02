@@ -18,6 +18,7 @@
 		1FF59D601A2A55B9004A9B00 /* Little T-Rex_OBJ_obj.obj in Resources */ = {isa = PBXBuildFile; fileRef = 1FF59D5F1A2A55B9004A9B00 /* Little T-Rex_OBJ_obj.obj */; };
 		1FF59D621A2A584E004A9B00 /* CubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF59D611A2A584E004A9B00 /* CubeModel.swift */; };
 		1FF59D641A2A5859004A9B00 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF59D631A2A5859004A9B00 /* Model.swift */; };
+		1FF59D681A2A60D4004A9B00 /* Matrix4.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FF59D671A2A60D4004A9B00 /* Matrix4.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,9 @@
 		1FF59D5F1A2A55B9004A9B00 /* Little T-Rex_OBJ_obj.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Little T-Rex_OBJ_obj.obj"; sourceTree = "<group>"; };
 		1FF59D611A2A584E004A9B00 /* CubeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubeModel.swift; sourceTree = "<group>"; };
 		1FF59D631A2A5859004A9B00 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		1FF59D651A2A60D3004A9B00 /* MBE-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MBE-Bridging-Header.h"; sourceTree = "<group>"; };
+		1FF59D661A2A60D4004A9B00 /* Matrix4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix4.h; sourceTree = "<group>"; };
+		1FF59D671A2A60D4004A9B00 /* Matrix4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Matrix4.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,9 +101,10 @@
 				1FF59D3F1A2A1594004A9B00 /* Main.storyboard */,
 				1FF59D421A2A1595004A9B00 /* Images.xcassets */,
 				1FF59D441A2A1595004A9B00 /* LaunchScreen.xib */,
+				1FF59D691A2A60E4004A9B00 /* Matrix4 */,
 				1FF59D371A2A1594004A9B00 /* Supporting Files */,
-				1FF59D611A2A584E004A9B00 /* CubeModel.swift */,
-				1FF59D631A2A5859004A9B00 /* Model.swift */,
+				1FF59D6A1A2A71BE004A9B00 /* Models */,
+				1FF59D651A2A60D3004A9B00 /* MBE-Bridging-Header.h */,
 			);
 			path = MBE;
 			sourceTree = "<group>";
@@ -127,6 +132,24 @@
 				1FF59D501A2A1595004A9B00 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1FF59D691A2A60E4004A9B00 /* Matrix4 */ = {
+			isa = PBXGroup;
+			children = (
+				1FF59D661A2A60D4004A9B00 /* Matrix4.h */,
+				1FF59D671A2A60D4004A9B00 /* Matrix4.m */,
+			);
+			name = Matrix4;
+			sourceTree = "<group>";
+		};
+		1FF59D6A1A2A71BE004A9B00 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1FF59D611A2A584E004A9B00 /* CubeModel.swift */,
+				1FF59D631A2A5859004A9B00 /* Model.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,6 +256,7 @@
 				1FF59D621A2A584E004A9B00 /* CubeModel.swift in Sources */,
 				1FF59D5C1A2A271C004A9B00 /* MetalView.swift in Sources */,
 				1FF59D5E1A2A2860004A9B00 /* MBEViewController.swift in Sources */,
+				1FF59D681A2A60D4004A9B00 /* Matrix4.m in Sources */,
 				1FF59D641A2A5859004A9B00 /* Model.swift in Sources */,
 				1FF59D3E1A2A1594004A9B00 /* Shaders.metal in Sources */,
 				1FF59D3A1A2A1594004A9B00 /* AppDelegate.swift in Sources */,
@@ -360,9 +384,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = MBE/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MBE/MBE-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -370,9 +397,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = MBE/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MBE/MBE-Bridging-Header.h";
 			};
 			name = Release;
 		};

@@ -13,11 +13,16 @@ class MetalView : UIView {
 	let device = MTLCreateSystemDefaultDevice()
 	var metalLayer: CAMetalLayer?
 	var positionBuffer: MTLBuffer! = nil
+	var uniformBuffer: MTLBuffer! = nil
+	var indexBuffer: MTLBuffer! = nil
+	
 	var numberOfVertices = 0
 	var pipeline: MTLRenderPipelineState! = nil
 	var displayLink: CADisplayLink! = nil
 	
 	var model = CubeModel()
+	
+	var projectionMatrix: Matrix4!
 	
 	required init(coder aDecoder: NSCoder) {
 		
@@ -29,6 +34,7 @@ class MetalView : UIView {
 			buildDevice()
 			buildVertexBuffers()
 			buildPipeline()
+			setupCamera()
 		} else {
 			assert(false, "layer is not CAMetalLayer")
 		}
@@ -48,10 +54,15 @@ class MetalView : UIView {
 	func buildVertexBuffers() {
 		let positions: [Float] = model.vertices
 		let positionLength = positions.count * sizeofValue(positions[0])
-		numberOfVertices = positions.count
 		
 		// options:MTLResourceOptionCPUCacheModeDefault ?
 		positionBuffer = device.newBufferWithBytes(positions, length: positionLength, options: nil)
+		
+//		let indices: [UInt16] = model.indices
+//		let indexLength = indices.count * sizeofValue(indices[0])
+//		indexBuffer = device.newBufferWithBytes(indices, length: indexLength, options: nil)
+		
+		numberOfVertices = positions.count
 	}
 	
 	func buildPipeline() {
@@ -68,6 +79,14 @@ class MetalView : UIView {
 		
 		var pipelineError: NSError?
 		pipeline = device.newRenderPipelineStateWithDescriptor(pipelineDescriptor, error: nil)
+	}
+	
+	func setupCamera() {
+		projectionMatrix = Matrix4.makePerspectiveViewAngle(
+			Matrix4.degreesToRad(85.0),
+			aspectRatio: Float(self.bounds.size.width/self.bounds.size.height),
+			nearZ: 0.01,
+			farZ: 100.0)
 	}
 	
 	func redraw() {
@@ -93,7 +112,22 @@ class MetalView : UIView {
 		let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(passDescriptor)!
 		commandEncoder.setRenderPipelineState(pipeline)
 		commandEncoder.setVertexBuffer(positionBuffer, offset: 0, atIndex: 0)
+		
+		// TODO: We should store the buffer data and only update it as needed
+		var nodeModelMatrix = modelMatrix()
+		uniformBuffer = device.newBufferWithLength(sizeof(Float) * Matrix4.numberOfElements() * 2, options: nil)
+		var bufferPointer = uniformBuffer?.contents()
+		memcpy(bufferPointer!, nodeModelMatrix.raw(),
+			UInt(sizeof(Float) * Matrix4.numberOfElements()))
+		memcpy(bufferPointer! + sizeof(Float)*Matrix4.numberOfElements(), projectionMatrix.raw(), UInt(sizeof(Float)*Matrix4.numberOfElements()))
+		
+		commandEncoder.setVertexBuffer(self.uniformBuffer, offset: 0, atIndex: 1)
+		
 		commandEncoder.drawPrimitives(.Triangle, vertexStart: 0, vertexCount: numberOfVertices, instanceCount: 1)
+		
+//		let start = 3 * sizeof(UInt16)
+//		let count = 3 // numberOfVertices
+//		commandEncoder.drawIndexedPrimitives(.Triangle, indexCount: count, indexType: MTLIndexType.UInt16, indexBuffer: indexBuffer, indexBufferOffset: start, instanceCount: 1)
 		commandEncoder.endEncoding()
 		
 		// Indicate that rendering is complete and drawable is ready to be executed on the GPU
@@ -105,6 +139,18 @@ class MetalView : UIView {
 		autoreleasepool {
 			self.redraw()
 		}
+	}
+	
+	// TODO: Move this into the model class
+	
+	func modelMatrix() -> Matrix4 {
+		var matrix = Matrix4()
+		
+		matrix.translate(0, y: 0, z: -5)
+		matrix.rotateAroundX(0, y: 0, z: 0)
+		matrix.scale(0.5, y: 0.5, z: 0.5)
+		
+		return matrix
 	}
 	
 	// MARK: Lifetime methods

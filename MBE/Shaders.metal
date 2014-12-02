@@ -10,16 +10,26 @@
 
 using namespace metal;
 
+struct Uniforms {
+	float4x4 modelMatrix;
+	float4x4 projectionMatrix;
+};
+
 struct Vertex
 {
 	float4 position [[position]];
 };
 
 vertex Vertex vertex_main(constant float4 *position [[buffer(0)]],
-								 constant float4 *color [[buffer(1)]],
-								 uint vid [[vertex_id]])
+						  constant Uniforms &uniforms [[buffer(1)]],
+						  uint vid [[vertex_id]])
 {
+	float4x4 mv_Matrix = uniforms.modelMatrix;
+	float4x4 proj_matrix = uniforms.projectionMatrix;
+	
 	Vertex vert;
+//	vert.position = proj_matrix * mv_Matrix * position[vid];
+	
 	vert.position = position[vid];
 	
 	return vert;
