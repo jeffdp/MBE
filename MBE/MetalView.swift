@@ -13,6 +13,7 @@ class MetalView : UIView {
 	let device = MTLCreateSystemDefaultDevice()
 	var metalLayer: CAMetalLayer?
 	var positionBuffer: MTLBuffer! = nil
+	var normalBuffer: MTLBuffer! = nil
 	var uniformBuffer: MTLBuffer! = nil
 	var indexBuffer: MTLBuffer! = nil
 	
@@ -58,9 +59,11 @@ class MetalView : UIView {
 	func buildVertexBuffers() {
 		let positions: [Float] = model.vertices
 		let positionLength = positions.count * sizeofValue(positions[0])
-		
-		// options:MTLResourceOptionCPUCacheModeDefault ?
 		positionBuffer = device.newBufferWithBytes(positions, length: positionLength, options: nil)
+		
+		let normals: [Float] = model.normals
+		let normalLength = normals.count * sizeofValue(normals[0])
+		normalBuffer = device.newBufferWithBytes(normals, length: normalLength, options: nil)
 		
 		let indices: [UInt16] = model.indices
 		let indexLength = indices.count * sizeofValue(indices[0])
@@ -121,6 +124,7 @@ class MetalView : UIView {
 		let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(passDescriptor)!
 		commandEncoder.setRenderPipelineState(pipeline)
 		commandEncoder.setVertexBuffer(positionBuffer, offset: 0, atIndex: 0)
+		commandEncoder.setVertexBuffer(normalBuffer, offset: 0, atIndex: 1)
 		
 		// TODO: We should store the buffer data and only update it as needed
 		var nodeModelMatrix = model.modelTransform
@@ -130,7 +134,7 @@ class MetalView : UIView {
 			UInt(sizeof(Float) * Matrix4.numberOfElements()))
 		memcpy(bufferPointer! + sizeof(Float)*Matrix4.numberOfElements(), projectionMatrix.raw(), UInt(sizeof(Float)*Matrix4.numberOfElements()))
 		
-		commandEncoder.setVertexBuffer(self.uniformBuffer, offset: 0, atIndex: 1)
+		commandEncoder.setVertexBuffer(self.uniformBuffer, offset: 0, atIndex: 2)
 		
 		commandEncoder.drawPrimitives(.Triangle, vertexStart: 0, vertexCount: numberOfVertices, instanceCount: 1)
 		

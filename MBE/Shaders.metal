@@ -18,10 +18,12 @@ struct Uniforms {
 struct Vertex
 {
 	float4 position [[position]];
+	float4 normal;
 };
 
 vertex Vertex vertex_main(constant packed_float3 *position [[buffer(0)]],
-						  constant Uniforms &uniforms [[buffer(1)]],
+						  constant packed_float3 *normal [[buffer(1)]],
+						  constant Uniforms &uniforms [[buffer(2)]],
 						  uint vid [[vertex_id]])
 {
 	float4x4 mv_Matrix = uniforms.modelMatrix;
@@ -30,12 +32,14 @@ vertex Vertex vertex_main(constant packed_float3 *position [[buffer(0)]],
 	Vertex vert;
 	vert.position = proj_matrix * mv_Matrix * float4(position[vid], 1.0);
 	
-//	vert.position = position[vid];
+	vert.normal = float4(normal[vid], 1.0);
 	
 	return vert;
 }
 
 fragment float4 fragment_main(Vertex vert [[stage_in]])
 {
-	return float4(1, 0, 0, 1);
+	float3 diffuse = float3(1, 0, 0);
+	
+	return float4(diffuse, 1);
 }
