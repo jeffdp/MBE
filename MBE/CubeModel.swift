@@ -16,18 +16,6 @@ class CubeModel {
 	var vertices: [Float] {
 		get {
 			return [
-				//Front
-//				20, 21, 22,
-//				20, 22, 23
-				-1, -1, 0,
-				-1, 1, 0,
-				1, 1, 0,
-				-1, -1, 0,
-				1, 1, 0,
-				1, -1, 0
-				
-
-/*
 				//Left
 				-1, -1, -1,
 				-1, 1, -1,
@@ -63,7 +51,6 @@ class CubeModel {
 				-1, 1, 1,
 				1, 1, 1,
 				1, -1, 1
-*/
 			]
 		}
 	}
@@ -71,15 +58,6 @@ class CubeModel {
 	var normals: [Float] {
 		get {
 			return [
-				//Front
-				0, 0, 1,
-				0, 0, 1,
-				0, 0, 1,
-				0, 0, 1,
-				0, 0, 1,
-				0, 0, 1
-				
-/*
 				//Left
 				-1, 0, 0,
 				-1, 0, 0,
@@ -115,7 +93,6 @@ class CubeModel {
 				0, 0, 1,
 				0, 0, 1,
 				0, 0, 1
-*/
 			]
 		}
 	}

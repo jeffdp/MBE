@@ -58,11 +58,11 @@ class MetalView : UIView {
 		// options:MTLResourceOptionCPUCacheModeDefault ?
 		positionBuffer = device.newBufferWithBytes(positions, length: positionLength, options: nil)
 		
-//		let indices: [UInt16] = model.indices
-//		let indexLength = indices.count * sizeofValue(indices[0])
-//		indexBuffer = device.newBufferWithBytes(indices, length: indexLength, options: nil)
+		let indices: [UInt16] = model.indices
+		let indexLength = indices.count * sizeofValue(indices[0])
+		indexBuffer = device.newBufferWithBytes(indices, length: indexLength, options: nil)
 		
-		numberOfVertices = positions.count
+		numberOfVertices = indices.count
 	}
 	
 	func buildPipeline() {
@@ -125,9 +125,10 @@ class MetalView : UIView {
 		
 		commandEncoder.drawPrimitives(.Triangle, vertexStart: 0, vertexCount: numberOfVertices, instanceCount: 1)
 		
-//		let start = 3 * sizeof(UInt16)
-//		let count = 3 // numberOfVertices
-//		commandEncoder.drawIndexedPrimitives(.Triangle, indexCount: count, indexType: MTLIndexType.UInt16, indexBuffer: indexBuffer, indexBufferOffset: start, instanceCount: 1)
+		let start = 0 * sizeof(UInt16)
+		let count = numberOfVertices
+		commandEncoder.drawIndexedPrimitives(.Triangle, indexCount: count, indexType: MTLIndexType.UInt16,
+			indexBuffer: indexBuffer, indexBufferOffset: start, instanceCount: 1)
 		commandEncoder.endEncoding()
 		
 		// Indicate that rendering is complete and drawable is ready to be executed on the GPU
@@ -146,8 +147,8 @@ class MetalView : UIView {
 	func modelMatrix() -> Matrix4 {
 		var matrix = Matrix4()
 		
-		matrix.translate(0, y: 0, z: -5)
-		matrix.rotateAroundX(0, y: 0, z: 0)
+		matrix.translate(0, y: 0, z: -3)
+		matrix.rotateAroundX(22.5, y: 0, z: 0)
 		matrix.scale(0.5, y: 0.5, z: 0.5)
 		
 		return matrix

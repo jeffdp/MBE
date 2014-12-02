@@ -20,7 +20,7 @@ struct Vertex
 	float4 position [[position]];
 };
 
-vertex Vertex vertex_main(constant float4 *position [[buffer(0)]],
+vertex Vertex vertex_main(constant packed_float3 *position [[buffer(0)]],
 						  constant Uniforms &uniforms [[buffer(1)]],
 						  uint vid [[vertex_id]])
 {
@@ -28,9 +28,9 @@ vertex Vertex vertex_main(constant float4 *position [[buffer(0)]],
 	float4x4 proj_matrix = uniforms.projectionMatrix;
 	
 	Vertex vert;
-//	vert.position = proj_matrix * mv_Matrix * position[vid];
+	vert.position = proj_matrix * mv_Matrix * float4(position[vid], 1.0);
 	
-	vert.position = position[vid];
+//	vert.position = position[vid];
 	
 	return vert;
 }
