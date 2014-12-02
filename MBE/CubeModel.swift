@@ -9,8 +9,27 @@
 import Foundation
 
 class CubeModel {
+	
+	var translation: [Float] = [0, 0, 0]
+	var rotationX: [Float] = [0, 0, 0]
+	var scale: Float = 1
+	
 	init() {
-		
+		modelTransform.translate(0, y: 0, z: -3)
+		modelTransform.rotateAroundX(22.5, y: 0, z: 0)
+		modelTransform.scale(0.5, y: 0.5, z: 0.5)
+	}
+	
+	var modelTransform: Matrix4 {
+		get {
+			var matrix = Matrix4()
+			
+			matrix.translate(translation[0], y: translation[1], z: translation[2])
+			matrix.rotateAroundX(rotationX[0], y: rotationX[1], z: rotationX[2])
+			matrix.scale(scale, y: scale, z: scale)
+			
+			return matrix
+		}
 	}
 	
 	var vertices: [Float] {

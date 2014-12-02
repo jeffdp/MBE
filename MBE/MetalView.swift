@@ -35,6 +35,10 @@ class MetalView : UIView {
 			buildVertexBuffers()
 			buildPipeline()
 			setupCamera()
+			
+			model.translation = [0, 0, -2];
+			model.rotationX = [22.5, 0, 0];
+			model.scale = 0.5
 		} else {
 			assert(false, "layer is not CAMetalLayer")
 		}
@@ -89,6 +93,11 @@ class MetalView : UIView {
 			farZ: 100.0)
 	}
 	
+	func update() {
+		let rotation = model.rotationX
+		model.rotationX = [rotation[0], rotation[1] + 0.01, rotation[2]]
+	}
+	
 	func redraw() {
 		// Get the next displayable buffer (texture)
 		let drawable = metalLayer!.nextDrawable()
@@ -114,7 +123,7 @@ class MetalView : UIView {
 		commandEncoder.setVertexBuffer(positionBuffer, offset: 0, atIndex: 0)
 		
 		// TODO: We should store the buffer data and only update it as needed
-		var nodeModelMatrix = modelMatrix()
+		var nodeModelMatrix = model.modelTransform
 		uniformBuffer = device.newBufferWithLength(sizeof(Float) * Matrix4.numberOfElements() * 2, options: nil)
 		var bufferPointer = uniformBuffer?.contents()
 		memcpy(bufferPointer!, nodeModelMatrix.raw(),
@@ -138,20 +147,9 @@ class MetalView : UIView {
 	
 	func renderLoop() {
 		autoreleasepool {
+			self.update()
 			self.redraw()
 		}
-	}
-	
-	// TODO: Move this into the model class
-	
-	func modelMatrix() -> Matrix4 {
-		var matrix = Matrix4()
-		
-		matrix.translate(0, y: 0, z: -3)
-		matrix.rotateAroundX(22.5, y: 0, z: 0)
-		matrix.scale(0.5, y: 0.5, z: 0.5)
-		
-		return matrix
 	}
 	
 	// MARK: Lifetime methods
